@@ -35,7 +35,6 @@ public class GridSystem
 
     public GridPosition GetGridPosition(Vector3 worldPosition)
     {
-
         return new GridPosition(Mathf.RoundToInt(worldPosition.x / cellSize),
                                 Mathf.RoundToInt(worldPosition.z / cellSize));
     }
@@ -44,6 +43,8 @@ public class GridSystem
     {
         return gridObjectArray[gridPosition.x, gridPosition.z]; 
     }
+
+
 
     public void CreateDebugObjects(Transform debugPrefab)
     {
@@ -59,7 +60,6 @@ public class GridSystem
             }
         }
     }
-
 }
 
 
