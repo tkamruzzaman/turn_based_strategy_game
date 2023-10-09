@@ -33,7 +33,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Rifle_Run
+      name: Rifle_Run_READONLY
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
