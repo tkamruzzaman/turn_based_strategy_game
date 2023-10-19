@@ -10,7 +10,7 @@ public class Unit : MonoBehaviour
 
     private Vector3 targetPosition;
     private float moveSpeed = 5f;
-    private float rotaionSpeed = 7.5f;
+    private float rotationSpeed = 7.5f;
     private float stoppingDistance = 0.1f;
 
     private GridPosition gridPosition;
@@ -33,7 +33,7 @@ public class Unit : MonoBehaviour
             Vector3 moveDirection = (targetPosition - transform.position).normalized;
             transform.position += moveSpeed * Time.deltaTime * moveDirection;
 
-            transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * rotaionSpeed);
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
 
             animator.SetBool(ANIM_PARAM_IS_WALKING, true);
         }
@@ -42,10 +42,11 @@ public class Unit : MonoBehaviour
             animator.SetBool(ANIM_PARAM_IS_WALKING, false);
         }
 
-      GridPosition  newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        if(newGridPosition != gridPosition)
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        
+        if (newGridPosition != gridPosition)
         {
-            //unit changed GridPoition
+            //unit changed GridPosition
             LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
             gridPosition = newGridPosition;
         }
