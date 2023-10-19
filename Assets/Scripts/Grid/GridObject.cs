@@ -27,13 +27,9 @@ public class GridObject
 
     public List<Unit> GetUnitList() => unitList;
 
-    public void AddUnit(Unit unit)
-    {
-        unitList.Add(unit);
-    }
+    public void AddUnit(Unit unit) => unitList.Add(unit);
 
-    public void RemoveUnit(Unit unit)
-    {
-        unitList.Remove(unit);
-    }
+    public void RemoveUnit(Unit unit) => unitList.Remove(unit);
+
+    public bool HasAnyUnit() => unitList.Count > 0;
 }
