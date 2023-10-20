@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GridSystem
@@ -29,28 +28,28 @@ public class GridSystem
     }
 
     public Vector3 GetWorldPosition(GridPosition gridPosition)
-    {
-        return new Vector3(gridPosition.x, 0, gridPosition.z) * cellSize;
-    }
+        => new Vector3(gridPosition.x, 0, gridPosition.z) * cellSize;
+    
 
-    public GridPosition GetGridPosition(Vector3 worldPosition)
-    {
-        return new GridPosition(Mathf.RoundToInt(worldPosition.x / cellSize),
+    public GridPosition GetGridPosition(Vector3 worldPosition)  
+        => new (Mathf.RoundToInt(worldPosition.x / cellSize),
                                 Mathf.RoundToInt(worldPosition.z / cellSize));
-    }
+    
 
-    public GridObject GetGridObject(GridPosition gridPosition)
-    {
-        return gridObjectArray[gridPosition.x, gridPosition.z]; 
-    }
+    public GridObject GetGridObject(GridPosition gridPosition)   
+        => gridObjectArray[gridPosition.x, gridPosition.z]; 
+    
 
-    public bool IsValidGridPosition(GridPosition gridPosition)
-    {
-        return gridPosition.x >=0 
+    public bool IsValidGridPosition(GridPosition gridPosition)    
+        => gridPosition.x >=0 
             && gridPosition.z >=0
             && gridPosition.x < width 
             && gridPosition.z < height;
-    }
+    
+
+    public int GetWidth() => width;
+
+    public int GetHeight() => height;
 
     public void CreateDebugObjects(Transform debugPrefab)
     {

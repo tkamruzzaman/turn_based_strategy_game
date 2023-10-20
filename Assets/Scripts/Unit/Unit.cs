@@ -5,10 +5,12 @@ public class Unit : MonoBehaviour
 {
     private GridPosition gridPosition;
     private MoveAction moveAction;
+    private SpinAction spinAction;
 
     private void Awake()
     {
         moveAction = GetComponent<MoveAction>();
+        spinAction = GetComponent<SpinAction>();
     }
 
     private void Start()
@@ -19,8 +21,6 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
-
-
         GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
 
         if (newGridPosition != gridPosition)
@@ -31,8 +31,11 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public GridPosition GetGridPosition()=> gridPosition;
+
     public MoveAction GetMoveAction() => moveAction;
 
-    public GridPosition GetGridPosition()=> gridPosition;
+    public SpinAction GetSpinAction() => spinAction;
+
 
 }
