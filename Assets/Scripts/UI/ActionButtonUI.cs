@@ -6,6 +6,9 @@ public class ActionButtonUI : MonoBehaviour
 {
     private Button actionButton;
     private TMP_Text actionNameText;
+    [SerializeField] private Image selectionImage;
+
+    private BaseAction baseAction;
 
     private void Awake()
     {
@@ -15,11 +18,20 @@ public class ActionButtonUI : MonoBehaviour
 
     public void SetBaseAction(BaseAction baseAction)
     {
+        this.baseAction = baseAction;
+
         actionNameText.text = baseAction.GetActionName();
 
         actionButton.onClick.AddListener(() =>
         {
             UnitActionSystem.Instance.SetSelectedAction(baseAction);
         });
+    }
+
+    public void UpdateSelectedVisual()
+    {
+        BaseAction selectedBaseAction = UnitActionSystem.Instance.GetSelectedAction();
+
+        selectionImage.gameObject.SetActive(baseAction == selectedBaseAction);
     }
 }

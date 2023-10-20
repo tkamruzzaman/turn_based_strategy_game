@@ -28,7 +28,6 @@ public class SpinAction : BaseAction
 
         isActive = true;
         totalSpinAmount = 0f;
-        print("Spin");
     }
 
     public override List<GridPosition> GetValidActionGridPosition()
@@ -42,8 +41,8 @@ public class SpinAction : BaseAction
             unitGridPosition,
         };
     }
-    public override string GetActionName()
-    {
-        return "Spin";
-    }
+
+    public override string GetActionName() => "Spin";
+
+    public override int GetActionPointsCost() => 2;
 }

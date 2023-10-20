@@ -7,12 +7,15 @@ public class UnitActionSystem : MonoBehaviour
 {
     public static UnitActionSystem Instance { get; private set; }
 
-    public event EventHandler OnUnitSelectedUnitChanged;
+    public event EventHandler OnSelectedUnitChanged;
+    public event EventHandler OnSelectedActionChanged;
+    public event EventHandler<bool> OnBusyChanged;
+    public event EventHandler OnActionStarted;
 
-    [SerializeField] private Unit selectedUnit;
     [SerializeField] private LayerMask unitLayerMask;
+    [SerializeField] private Unit selectedUnit;
 
-    private BaseAction selectedAction;
+    [SerializeField] private BaseAction selectedAction;
 
     private bool isBusy;
 
@@ -49,17 +52,34 @@ public class UnitActionSystem : MonoBehaviour
         {
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPostion());
 
-            if (selectedAction.IsValidActionGridPosition(mouseGridPosition))
+            if (!selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                SetBusy();
-                selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+                return;
             }
+            if (!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
+            {
+                return;
+            }
+            SetBusy();
+            selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+
+            OnActionStarted?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    private void SetBusy() => isBusy = true;
+    private void SetBusy()
+    {
+        isBusy = true;
 
-    private void ClearBusy() => isBusy = false;
+        OnBusyChanged?.Invoke(this, isBusy);
+    }
+
+    private void ClearBusy()
+    {
+        isBusy = false;
+
+        OnBusyChanged?.Invoke(this, isBusy);
+    }
 
     private bool TryHandleUnitSelection()
     {
@@ -89,7 +109,7 @@ public class UnitActionSystem : MonoBehaviour
         selectedUnit = unit;
         SetSelectedAction(unit.GetMoveAction());
 
-        OnUnitSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
+        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public Unit GetSelectedUnit() => selectedUnit;
@@ -99,5 +119,7 @@ public class UnitActionSystem : MonoBehaviour
     public void SetSelectedAction(BaseAction selectedAction)
     {
         this.selectedAction = selectedAction;
+
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
     }
 }

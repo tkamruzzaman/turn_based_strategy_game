@@ -15,7 +15,7 @@ public class UnitSelectedVisual : MonoBehaviour
 
     private void Start()
     {
-        UnitActionSystem.Instance.OnUnitSelectedUnitChanged += UnitActionSystem_OnUnitSelectedUnitChanged;
+        UnitActionSystem.Instance.OnSelectedUnitChanged += UnitActionSystem_OnUnitSelectedUnitChanged;
 
         UpdateVisual();
     }
@@ -43,6 +43,6 @@ public class UnitSelectedVisual : MonoBehaviour
 
     private void OnDestroy()
     {
-        UnitActionSystem.Instance.OnUnitSelectedUnitChanged -= UnitActionSystem_OnUnitSelectedUnitChanged;
+        UnitActionSystem.Instance.OnSelectedUnitChanged -= UnitActionSystem_OnUnitSelectedUnitChanged;
     }
 }
