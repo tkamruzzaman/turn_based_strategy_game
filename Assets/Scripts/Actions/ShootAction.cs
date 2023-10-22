@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class ShootAction : BaseAction
 {
-    public event EventHandler OnShoot;
+    public event EventHandler<OnShootEventArgs> OnShoot;
+    public class OnShootEventArgs : EventArgs
+    {
+        public Unit shootingUnit;
+        public Unit targetUnit;
+    }
 
     private enum State
     {
@@ -33,16 +38,16 @@ public class ShootAction : BaseAction
                 Vector3 moveDirection = (targetUnit.GetWorldPosition() - unit.GetWorldPosition()).normalized;
                 float rotationSpeed = 7.5f;
                 transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
-                break; 
+                break;
             case State.Shooting:
                 if (canShootBullet)
-                {              
+                {
                     Shoot();
                     canShootBullet = false;
                 }
-                break; 
+                break;
             case State.CoolOff:
-            
+
                 break;
         }
 
@@ -74,7 +79,11 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
-        OnShoot?.Invoke(this, EventArgs.Empty);
+        OnShoot?.Invoke(this, new OnShootEventArgs
+        {
+            shootingUnit = unit,
+            targetUnit = targetUnit,
+        });
 
         targetUnit.Damage();
     }
