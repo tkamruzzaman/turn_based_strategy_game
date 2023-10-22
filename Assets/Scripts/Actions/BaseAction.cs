@@ -25,8 +25,18 @@ public abstract class BaseAction : MonoBehaviour
 
     public abstract List<GridPosition> GetValidActionGridPosition();
 
-    public virtual int GetActionPointsCost()
+    public virtual int GetActionPointsCost() => 1;
+
+    protected void ActionStart(Action onActionComplete)
     {
-        return 1;
+        isActive = true;
+        this.onActionComplete = onActionComplete;
     }
+
+    protected void ActionComplete()
+    {
+        isActive = false;
+        onActionComplete?.Invoke();
+    }
+
 }

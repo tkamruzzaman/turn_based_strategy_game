@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class MoveAction : BaseAction
 {
-    private const string ANIM_PARAM_IS_WALKING = "IsWalking";
+    public event EventHandler OnStartMoving;
+    public event EventHandler OnStopMoving;
 
-    [SerializeField] private Animator animator;
-    [SerializeField] private int maxMoveDistance;
+    [SerializeField] private int maxMoveDistance = 4;
 
     private Vector3 targetPosition;
-    private float moveSpeed = 5f;
-    private float rotationSpeed = 7.5f;
-    private float stoppingDistance = 0.1f;
 
     protected override void Awake()
     {
@@ -22,32 +19,33 @@ public class MoveAction : BaseAction
 
     private void Update()
     {
-        if(!isActive) { return; }
+        if (!isActive) { return; }
 
-        Vector3 moveDirection = (targetPosition - transform.position).normalized;
-
+        Vector3 moveDirection = (targetPosition - transform.position).normalized;       
+        float stoppingDistance = 0.1f;
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
+            float moveSpeed = 5f;
             transform.position += moveSpeed * Time.deltaTime * moveDirection;
-
-            animator.SetBool(ANIM_PARAM_IS_WALKING, true);
         }
         else
         {
-            animator.SetBool(ANIM_PARAM_IS_WALKING, false);
-            isActive = false;
-            onActionComplete();
+            OnStopMoving?.Invoke(this, EventArgs.Empty);
+
+            ActionComplete();
         }
 
+        float rotationSpeed = 7.5f;
         transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
     }
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        this.onActionComplete = onActionComplete;
+        ActionStart(onActionComplete);
 
-        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-        isActive = true;
+        targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        
+        OnStartMoving?.Invoke(this, EventArgs.Empty);
     }
 
     public override List<GridPosition> GetValidActionGridPosition()
