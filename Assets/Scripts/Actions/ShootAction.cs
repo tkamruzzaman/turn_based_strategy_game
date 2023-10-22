@@ -85,7 +85,7 @@ public class ShootAction : BaseAction
             targetUnit = targetUnit,
         });
 
-        targetUnit.Damage();
+        targetUnit.Damage(40);
     }
 
     public override List<GridPosition> GetValidActionGridPosition()
