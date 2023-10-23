@@ -4,6 +4,9 @@ using UnityEngine;
 [SelectionBase]
 public class Unit : MonoBehaviour
 {
+    public static event EventHandler OnAnyUnitSpawned;
+    public static event EventHandler OnAnyUnitDead;
+
     public event EventHandler OnActionPointChanged;
 
     private const int ACTION_POINT_MAX = 2;
@@ -33,6 +36,8 @@ public class Unit : MonoBehaviour
 
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         healthSystem.OnDeath += HealthSystem_OnDeath;
+
+        OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update()
@@ -62,6 +67,8 @@ public class Unit : MonoBehaviour
     {
         LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
         Destroy(gameObject);
+
+        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
     }
 
     public GridPosition GetGridPosition() => gridPosition;
