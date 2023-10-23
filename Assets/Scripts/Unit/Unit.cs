@@ -17,6 +17,7 @@ public class Unit : MonoBehaviour
     private HealthSystem healthSystem;
     private MoveAction moveAction;
     private SpinAction spinAction;
+    private ShootAction shootAction;
     private BaseAction[] baseActionArray;
 
     private int actionPoints = ACTION_POINT_MAX;
@@ -26,6 +27,7 @@ public class Unit : MonoBehaviour
         healthSystem = GetComponent<HealthSystem>();
         moveAction = GetComponent<MoveAction>();
         spinAction = GetComponent<SpinAction>();
+        shootAction = GetComponent<ShootAction>();
         baseActionArray = GetComponents<BaseAction>();
     }
 
@@ -79,6 +81,8 @@ public class Unit : MonoBehaviour
 
     public SpinAction GetSpinAction() => spinAction;
 
+    public ShootAction GetShootAction() => shootAction;
+
     public BaseAction[] GetBaseActionArray() => baseActionArray;
 
     public bool TrySpendActionPointsToTakeAction(BaseAction baseAction)
@@ -92,7 +96,7 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    private bool CanSpendActionPointsToTakeAction(BaseAction baseAction) 
+    public bool CanSpendActionPointsToTakeAction(BaseAction baseAction) 
         => actionPoints >= baseAction.GetActionPointsCost();
 
     private void ResetActionPoints()
@@ -114,6 +118,11 @@ public class Unit : MonoBehaviour
     public void Damage(int damageAmount)
     {
         healthSystem.Damage(damageAmount);
+    }
+
+    public float GetHealthNormalized()
+    {
+        return healthSystem.GetHealthNormalized();
     }
 
     private void OnDestroy()

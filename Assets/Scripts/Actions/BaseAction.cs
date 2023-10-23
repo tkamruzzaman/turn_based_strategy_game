@@ -50,4 +50,30 @@ public abstract class BaseAction : MonoBehaviour
 
     public Unit GetUnit() => unit;
 
+    public EnemyAIAction GetBestEnemyAIAction()
+    {
+        List<EnemyAIAction> enemyAIActionList = new();
+
+        List<GridPosition> validActionGridPositionList = GetValidActionGridPosition();
+
+        foreach (GridPosition gridPosition in validActionGridPositionList)
+        {
+            EnemyAIAction enemyAIAction = GetBestEnemyAIAction(gridPosition);
+            enemyAIActionList.Add(enemyAIAction);
+        }
+
+        if (enemyAIActionList.Count > 0)
+        {
+            enemyAIActionList.Sort((EnemyAIAction a, EnemyAIAction b) => b.actionValue - a.actionValue);
+           return enemyAIActionList[0];
+        }
+        else
+        {
+            //No possible Enemy AI Actions
+            return null;
+        }
+    }
+
+    public abstract EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition);
+
 }

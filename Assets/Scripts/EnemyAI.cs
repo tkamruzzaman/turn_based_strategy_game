@@ -40,7 +40,7 @@ public class EnemyAI : MonoBehaviour
                 timer -= Time.deltaTime;
                 if (timer <= 0f)
                 {
-                    if (TryTakeEnemyAIAcion(SetStateTakingTurn))
+                    if (TryTakeEnemyAIAction(SetStateTakingTurn))
                     {
                         state = State.Busy;
                     }
@@ -75,20 +75,58 @@ public class EnemyAI : MonoBehaviour
         state = State.TakingTurn;
     }
 
-    private bool TryTakeEnemyAIAcion(Action onEnemyAIActionComplete)
+    private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
-        print("Take Enemy AI Acion!");
-
         foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
         {
-            if (TryTakeEnemyAIAcion(enemyUnit, onEnemyAIActionComplete))
-            { return true; }
+            if (TryTakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete))
+            {
+                return true;
+            }
         }
         return false;
     }
 
-    private bool TryTakeEnemyAIAcion(Unit enemyUnit, Action onEnemyAIActionComplete)
+    private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
+        EnemyAIAction bestEnemyAIAction = null;
+        BaseAction bestBaseAction = null;
+
+        foreach (BaseAction baseAction in enemyUnit.GetBaseActionArray())
+        {
+            if (!enemyUnit.CanSpendActionPointsToTakeAction(baseAction))
+            {
+                //Enemy can not afford this action
+                continue;
+            }
+
+            if (bestEnemyAIAction == null)
+            {
+                bestEnemyAIAction = baseAction.GetBestEnemyAIAction();
+                bestBaseAction = baseAction;
+            }
+            else
+            {
+                EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
+                if (testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemyAIAction.actionValue)
+                {
+                    bestEnemyAIAction = testEnemyAIAction;
+                    bestBaseAction = baseAction;
+                }
+            }
+        }
+
+        if (bestEnemyAIAction != null && enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction))
+        {
+            bestBaseAction.TakeAction(bestEnemyAIAction.gridPosition, onEnemyAIActionComplete);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        /* 
+        //Test with Spin Action
         SpinAction spinAction = enemyUnit.GetSpinAction();
 
         GridPosition actionGridPosition = enemyUnit.GetGridPosition();
@@ -104,6 +142,7 @@ public class EnemyAI : MonoBehaviour
         print("Spin Action!");
         spinAction.TakeAction(actionGridPosition, onEnemyAIActionComplete);
         return true;
+        */
     }
 
     private void OnDestroy()
