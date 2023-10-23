@@ -23,8 +23,8 @@ public class ShootAction : BaseAction
 
     private int maxShootDistance = 7;
     private float stateTimer;
-    private Unit targetUnit;
     private bool canShootBullet;
+    private Unit targetUnit;
 
     private void Update()
     {
@@ -135,8 +135,6 @@ public class ShootAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        ActionStart(onActionComplete);
-
         targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
 
         state = State.Aiming;
@@ -144,10 +142,16 @@ public class ShootAction : BaseAction
         stateTimer = aimingStateTime;
 
         canShootBullet = true;
+
+        ActionStart(onActionComplete);
     }
 
     public override string GetActionName() => "Shoot";
 
-    public override int GetActionPointsCost() => 2;
+    public override int GetActionPointsCost() => 1;
+
+    public Unit GetTargetUnit() => targetUnit;
+
+    public int GetMaxShootDistance() => maxShootDistance;
 
 }

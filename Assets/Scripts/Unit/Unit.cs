@@ -4,7 +4,7 @@ using UnityEngine;
 [SelectionBase]
 public class Unit : MonoBehaviour
 {
-    public static event EventHandler OnAnyActionPointChanged;
+    public event EventHandler OnActionPointChanged;
 
     private const int ACTION_POINT_MAX = 2;
 
@@ -42,8 +42,10 @@ public class Unit : MonoBehaviour
         if (newGridPosition != gridPosition)
         {
             //unit changed GridPosition
-            LevelGrid.Instance.UnitMovedGridPosition(this, gridPosition, newGridPosition);
+            GridPosition oldGridPosition = gridPosition;
             gridPosition = newGridPosition;
+
+            LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
         }
     }
 
@@ -89,13 +91,13 @@ public class Unit : MonoBehaviour
     private void ResetActionPoints()
     {
         actionPoints = ACTION_POINT_MAX;
-        OnAnyActionPointChanged?.Invoke(this, EventArgs.Empty);
+        OnActionPointChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void SpendActionPoints(int amount)
     {
         actionPoints -= amount;
-        OnAnyActionPointChanged?.Invoke(this, EventArgs.Empty);
+        OnActionPointChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetActionPoints() => actionPoints;

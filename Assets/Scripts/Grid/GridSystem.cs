@@ -51,14 +51,14 @@ public class GridSystem
 
     public int GetHeight() => height;
 
-    public void CreateDebugObjects(Transform debugPrefab)
+    public void CreateDebugObjects(Transform debugPrefab, Transform parent)
     {
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
             {
                 GridPosition gridPosition = new(x,z);
-                Transform debugTransfom = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                Transform debugTransfom = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity, parent);
                 //t.GetComponentInChildren<TMPro.TMP_Text>().text = $"x:{x},\n z:{z}";
                 GridDebugObject gridDebugObject = debugTransfom.GetComponent<GridDebugObject>();
                 gridDebugObject.SetGridObject(GetGridObject(gridPosition));
