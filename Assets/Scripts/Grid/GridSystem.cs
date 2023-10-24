@@ -1,20 +1,21 @@
+using System;
 using UnityEngine;
 
-public class GridSystem
+public class GridSystem<TGridObject>
 {
     private readonly int width;
     private readonly int height;
     private readonly float cellSize;
 
-    private readonly GridObject[,] gridObjectArray;
+    private readonly TGridObject[,] gridObjectArray;
 
-    public GridSystem(int width, int height, float cellSize)
+    public GridSystem(int width, int height, float cellSize, Func<GridSystem< TGridObject>, GridPosition, TGridObject> createGridObject)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
 
-        gridObjectArray = new GridObject[width, height];
+        gridObjectArray = new TGridObject[width, height];
 
         for (int x = 0; x < width; x++)
         {
@@ -22,7 +23,7 @@ public class GridSystem
             {
                 //Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z) + Vector3.right * 0.2f, Color.white, 1000);
                 GridPosition gridPosition = new(x, z);
-                gridObjectArray[x, z] = new GridObject(this, gridPosition);
+                gridObjectArray[x, z] = createGridObject(this, gridPosition);
             }
         }
     }
@@ -36,7 +37,7 @@ public class GridSystem
                                 Mathf.RoundToInt(worldPosition.z / cellSize));
     
 
-    public GridObject GetGridObject(GridPosition gridPosition)   
+    public TGridObject GetGridObject(GridPosition gridPosition)   
         => gridObjectArray[gridPosition.x, gridPosition.z]; 
     
 
@@ -61,7 +62,7 @@ public class GridSystem
                 Transform debugTransfom = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity, parent);
                 //t.GetComponentInChildren<TMPro.TMP_Text>().text = $"x:{x},\n z:{z}";
                 GridDebugObject gridDebugObject = debugTransfom.GetComponent<GridDebugObject>();
-                gridDebugObject.SetGridObject(GetGridObject(gridPosition));
+                gridDebugObject.SetGridObject(GetGridObject(gridPosition) as GridObject);
             }
         }
     }
