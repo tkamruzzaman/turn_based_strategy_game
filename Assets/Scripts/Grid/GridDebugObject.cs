@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,16 +5,16 @@ public class GridDebugObject : MonoBehaviour
 {
     [SerializeField] private TMP_Text text;
 
-    private GridObject gridObject;
+    private object gridObject;
 
-    public void SetGridObject(GridObject gridObject)
+    public virtual void SetGridObject(object gridObject)
     {
         this.gridObject = gridObject;
     }
 
-    public GridObject GetGridObject() {  return gridObject; }
+    public object GetGridObject() {  return gridObject; }
 
-    private void Update()
+    protected virtual void Update()
     {
         text.text = gridObject.ToString();
     }
