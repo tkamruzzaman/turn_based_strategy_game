@@ -1,3 +1,5 @@
+using System;
+
 public class PathNode
 {
     private GridPosition gridPosition;
@@ -22,6 +24,15 @@ public class PathNode
     public int GetHCost() => hCost;
     public int GetFCost() => fCost;
     public PathNode GetCameFromPathNode() => cameFromPathNode;
+
+    public void SetGCost(int value) => gCost = value;
+    public void SetHCost(int value) => hCost = value;
+    public void CalculateFCost() => fCost = gCost + hCost;
+    public void SetCameFromPathNode(PathNode pathNode) => cameFromPathNode = pathNode;
+    
+    public void ResetCameFromPathNode() => cameFromPathNode = null;
+    
+    public GridPosition GetGridPosition() => gridPosition;
 
 
 }
