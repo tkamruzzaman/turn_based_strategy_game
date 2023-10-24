@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-3)]
 public class LevelGrid : MonoBehaviour
 {
     public static LevelGrid Instance { get; private set; }
@@ -9,6 +10,10 @@ public class LevelGrid : MonoBehaviour
     public event EventHandler OnUnitMovedGridPosition;
 
     [SerializeField] private Transform gridDebugObjectPrefab;
+    
+    [SerializeField] private int width = 10;
+    [SerializeField] private int height = 10;
+    [SerializeField] private float cellSize = 2;
 
     private GridSystem<GridObject> gridSystem;
 
@@ -23,10 +28,15 @@ public class LevelGrid : MonoBehaviour
 
         Instance = this;
 
-        gridSystem = new(10, 10, 2f, 
+        gridSystem = new(width, height, cellSize, 
             (GridSystem<GridObject> g, GridPosition gridPosition) 
             => new GridObject(g, gridPosition));
         //gridSystem.CreateDebugObjects(gridDebugObjectPrefab, parent: transform);
+    }
+
+    private void Start()
+    {
+        Pathfinding.Instance.Setup(width, height, cellSize);
     }
 
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
