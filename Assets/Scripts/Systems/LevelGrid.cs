@@ -14,6 +14,7 @@ public class LevelGrid : MonoBehaviour
     [SerializeField] private int width = 10;
     [SerializeField] private int height = 10;
     [SerializeField] private float cellSize = 2;
+    [SerializeField] private bool isToShowDebugObjects;
 
     private GridSystem<GridObject> gridSystem;
 
@@ -28,10 +29,14 @@ public class LevelGrid : MonoBehaviour
 
         Instance = this;
 
-        gridSystem = new(width, height, cellSize, 
-            (GridSystem<GridObject> g, GridPosition gridPosition) 
+        gridSystem = new(width, height, cellSize,
+            (GridSystem<GridObject> g, GridPosition gridPosition)
             => new GridObject(g, gridPosition));
-        //gridSystem.CreateDebugObjects(gridDebugObjectPrefab, parent: transform);
+
+        if (isToShowDebugObjects)
+        {
+            gridSystem.CreateDebugObjects(gridDebugObjectPrefab, parent: transform);
+        }
     }
 
     private void Start()

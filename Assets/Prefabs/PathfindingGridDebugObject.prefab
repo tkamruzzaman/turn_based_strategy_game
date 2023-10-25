@@ -188,7 +188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7823309409241759520
 Transform:
   m_ObjectHideFlags: 0
@@ -827,3 +827,4 @@ MonoBehaviour:
   hCostText: {fileID: 2636940949115632161}
   fCostText: {fileID: 1068603054535765313}
   isWalkableSpriteRenderer: {fileID: 2414888792307812401}
+  isToShowWalkableArea: 1
