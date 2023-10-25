@@ -3,15 +3,6 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    [SerializeField] Unit unit;
-
-    GridSystemVisual gridSystemVisual;
-
-    private void Start()
-    {
-        gridSystemVisual = FindObjectOfType<GridSystemVisual>();    
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
@@ -20,12 +11,12 @@ public class Testing : MonoBehaviour
             GridPosition startGridPosition = new(0, 0);
 
             List<GridPosition> gridPositionList = Pathfinding.Instance.FindPath(startGridPosition, mouseGridPosition);
-        
-            for (int i = 0; i < gridPositionList.Count-1; i++)
+
+            for (int i = 0; i < gridPositionList.Count - 1; i++)
             {
                 Debug.DrawLine(
                     LevelGrid.Instance.GetWorldPosition(gridPositionList[i]),
-                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i +1]),
+                    LevelGrid.Instance.GetWorldPosition(gridPositionList[i + 1]),
                     Color.white, 10f);
             }
         }
