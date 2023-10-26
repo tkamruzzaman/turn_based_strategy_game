@@ -196,7 +196,7 @@ MonoBehaviour:
   grenadeTrailRenderer: {fileID: 6600402369290610411}
   grenadeDamageLayerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 264
   grenadeAnimationCurve:
     serializedVersion: 2
     m_Curve:

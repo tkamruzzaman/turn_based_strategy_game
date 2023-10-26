@@ -65,7 +65,6 @@ public class GrenadeAction : BaseAction
         {
             grenadeProjectile.Setup(gridPosition, OnGrenadeBehaviourComplete);
         }
-        Debug.Log("Grenade Action");
         ActionStart(onActionComplete);
     }
 
