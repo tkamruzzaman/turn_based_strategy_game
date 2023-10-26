@@ -106,7 +106,6 @@ public class ShootAction : BaseAction
     {
         List<GridPosition> validGridPositionList = new();
 
-
         for (int x = -maxShootDistance; x <= maxShootDistance; x++)
         {
             for (int z = -maxShootDistance; z <= maxShootDistance; z++)
