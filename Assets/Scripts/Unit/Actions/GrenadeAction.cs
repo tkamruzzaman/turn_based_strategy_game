@@ -8,19 +8,17 @@ public class GrenadeAction : BaseAction
 
     private int maxThrowDistance = 7;
 
-    private void Update()
-    {
-        if (!isActive)
-        {
-            return;
-        }
-
-        //ActionComplete();
-    }
+    //private void Update()
+    //{
+    //    if (!isActive)
+    //    {
+    //        return;
+    //    }
+    //}
 
     public override string GetActionName() => "Grenade";
 
-    public override EnemyAIAction GetBestEnemyAIAction(GridPosition gridPosition) => new EnemyAIAction()
+    public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition) => new EnemyAIAction()
     {
         gridPosition = gridPosition,
         actionValue = 0,
