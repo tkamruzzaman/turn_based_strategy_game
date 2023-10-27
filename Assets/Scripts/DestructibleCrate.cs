@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class DestructibleCrate : MonoBehaviour
 {
     public static event EventHandler OnAnyDestructibleDestroyed;

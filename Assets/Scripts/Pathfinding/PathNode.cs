@@ -21,17 +21,19 @@ public class PathNode
     }
 
     public int GetGCost() => gCost;
-    public int GetHCost() => hCost;
-    public int GetFCost() => fCost;
-    public PathNode GetCameFromPathNode() => cameFromPathNode;
-    public bool GetIsWalkable() => isWalkable;
-
     public void SetGCost(int value) => gCost = value;
-    public void SetHCost(int value) => hCost = value;
-    public void CalculateFCost() => fCost = gCost + hCost;
-    public void SetCameFromPathNode(PathNode pathNode) => cameFromPathNode = pathNode;
-    public void SetIsWalkable(bool isWalkable) => this.isWalkable = isWalkable;
 
+    public int GetHCost() => hCost;
+    public void SetHCost(int value) => hCost = value;
+
+    public int GetFCost() => fCost;
+    public void CalculateFCost() => fCost = gCost + hCost;
+
+    public bool GetIsWalkable() => isWalkable;
+    public void SetIsWalkable(bool isWalkable) => this.isWalkable = isWalkable;
+    
+    public PathNode GetCameFromPathNode() => cameFromPathNode;
+    public void SetCameFromPathNode(PathNode pathNode) => cameFromPathNode = pathNode;
     public void ResetCameFromPathNode() => cameFromPathNode = null;
 
     public GridPosition GetGridPosition() => gridPosition;

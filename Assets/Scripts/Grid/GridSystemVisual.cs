@@ -11,7 +11,6 @@ public class GridSystemVisual : MonoBehaviour
         Red,
         RedSoft,
         Yellow,
-        RedHard,
     }
 
     [Serializable]
@@ -97,6 +96,9 @@ public class GridSystemVisual : MonoBehaviour
             case SwordAction swordAction:
                 gridVisualType = GridVisualType.Red;
                 ShowGridPositionRangeSquare(selectedUnit.GetGridPosition(), swordAction.GetMaxSwordDistance(), GridVisualType.RedSoft);
+                break;
+                case InteractAction interactAction:
+                gridVisualType= GridVisualType.Blue;
                 break;
             default:
                 gridVisualType = GridVisualType.White;

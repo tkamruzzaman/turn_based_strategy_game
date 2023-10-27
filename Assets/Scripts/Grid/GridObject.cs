@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class GridObject
 {
     private readonly GridSystem<GridObject> gridSystem;
-    private readonly GridPosition gridPosition;
+    private GridPosition gridPosition;
     private List<Unit> unitList;
+    private IInteractable interactable;
 
     public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)
     {
@@ -22,7 +21,7 @@ public class GridObject
         {
             unitString += unit.ToString() + "\n";
         }
-            return gridPosition.ToString() + "\n" + unitString;
+        return gridPosition.ToString() + "\n" + unitString;
     }
 
     public List<Unit> GetUnitList() => unitList;
@@ -34,4 +33,9 @@ public class GridObject
     public bool HasAnyUnit() => unitList.Count > 0;
 
     public Unit GetUnit() => HasAnyUnit() ? unitList[0] : null;
+
+    public IInteractable GetInteractable() => interactable;
+
+    public void SetInteractable(IInteractable interactable) => this.interactable = interactable;
+
 }
