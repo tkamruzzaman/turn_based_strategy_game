@@ -1,3 +1,5 @@
+//#define TESTING
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +20,7 @@ public class GridSystemVisual : MonoBehaviour
     {
         public GridVisualType gridVisualType;
         public Material material;
+        public Material hexMaterial;
     }
 
     [SerializeField] private List<GridVisualTypeMaterial> gridVisualTypeMaterialList;
@@ -25,6 +28,10 @@ public class GridSystemVisual : MonoBehaviour
     [SerializeField] private Transform gridSystemVisualSinglePrefab;
 
     private GridSystemVisualSingle[,] gridSystemVisualSingleArray;
+#if TESTING
+    private GridSystemVisualSingle lastSelectedGridSystemVisualSingle;
+#endif
+
 
     private void Start()
     {
@@ -35,7 +42,39 @@ public class GridSystemVisual : MonoBehaviour
 
         //UpdateGridVisual();
         Invoke(nameof(UpdateGridVisual), 0.2f);
+
+#if TESTING
+        Invoke(nameof(VisualTest), 0.25f);
+#endif
     }
+
+#if TESTING
+    private void Update()
+    {
+        if (lastSelectedGridSystemVisualSingle != null) { lastSelectedGridSystemVisualSingle.HideSelected(); }
+
+        Vector3 mouseWorldPosition = MouseWorld.GetPostion();
+        GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
+        if (LevelGrid.Instance.IsValidGridPosition(gridPosition))
+        {
+            lastSelectedGridSystemVisualSingle = gridSystemVisualSingleArray[gridPosition.x, gridPosition.z];
+        }
+
+        if (lastSelectedGridSystemVisualSingle != null) { lastSelectedGridSystemVisualSingle.ShowSelected(); }
+
+    }
+
+    private void VisualTest()
+    {
+        for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
+        {
+            for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
+            {
+                gridSystemVisualSingleArray[x, z].Show(GetGridVisualTypeMaterial(GridVisualType.White));
+            }
+        }
+    }
+#endif
 
     private void CreateGridVisual()
     {
@@ -180,7 +219,8 @@ public class GridSystemVisual : MonoBehaviour
         {
             if (gridVisualTypeMaterial.gridVisualType == gridVisualType)
             {
-                return gridVisualTypeMaterial.material;
+                //return gridVisualTypeMaterial.material;
+                return gridVisualTypeMaterial.hexMaterial;
             }
         }
         Debug.LogError($"Could not find GridVisualTypeMaterial for {gridVisualType}!");

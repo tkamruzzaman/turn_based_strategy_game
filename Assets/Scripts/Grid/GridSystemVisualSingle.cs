@@ -1,8 +1,10 @@
+//#define TESTING
 using UnityEngine;
 
 public class GridSystemVisualSingle : MonoBehaviour
 {
     [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private GameObject selectedGameObject;
 
     private void Start()
     {
@@ -14,8 +16,16 @@ public class GridSystemVisualSingle : MonoBehaviour
         meshRenderer.material = material;
         meshRenderer.enabled = true;
     }
+
     public void Hide()
     {
         meshRenderer.enabled = false;
     }
+
+#if TESTING
+    public void ShowSelected()=> selectedGameObject.SetActive(true);
+
+    public void HideSelected()=> selectedGameObject.SetActive(false);
+#endif
+
 }
