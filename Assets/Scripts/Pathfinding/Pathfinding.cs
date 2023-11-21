@@ -9,6 +9,7 @@ public class Pathfinding : MonoBehaviour
 
     private const int MOVE_STRAIGHT_COST = 10;
     //private const int MOVE_DIAGONAL_COST = 10;//14;
+    public GridType GridType { get; private set; }
 
     [SerializeField] private Transform gridDebugObjectPrefab;
     [SerializeField] private LayerMask obstaclesLayerMask;
@@ -17,7 +18,7 @@ public class Pathfinding : MonoBehaviour
     private int height;
     private float cellSize;
 
-    private GridSystemHex<PathNode> gridSystem;
+    private GridSystem<PathNode> gridSystem;
 
     private void Awake()
     {
@@ -30,15 +31,15 @@ public class Pathfinding : MonoBehaviour
         Instance = this;
     }
 
-    public void Setup(int width, int height, float cellSize)
+    public void Setup(GridType gridType, int width, int height, float cellSize)
     {
+        this.GridType = gridType;
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
 
-        gridSystem = new(this.width, this.height, this.cellSize,
-                (GridSystemHex<PathNode> g, GridPosition gridPosition)
-                => new PathNode(gridPosition));
+        gridSystem = new(this.GridType, this.width, this.height, this.cellSize, 
+            (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
 
 #if TESTING
         gridSystem.CreateDebugObjects(gridDebugObjectPrefab, parent: transform);
@@ -306,7 +307,7 @@ public class Pathfinding : MonoBehaviour
 
     public int GetPathLength(GridPosition startGridPosition, GridPosition endGridPosition)
     {
-        FindPath(startGridPosition, endGridPosition, out int pathLength); 
+        FindPath(startGridPosition, endGridPosition, out int pathLength);
         return pathLength;
     }
 

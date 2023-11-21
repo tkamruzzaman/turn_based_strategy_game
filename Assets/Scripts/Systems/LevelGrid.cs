@@ -1,3 +1,5 @@
+//#define TESTING
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +12,20 @@ public class LevelGrid : MonoBehaviour
     public event EventHandler OnUnitMovedGridPosition;
 
     [SerializeField] private Transform gridDebugObjectPrefab;
-    
+
     [SerializeField] private int width = 10;
     [SerializeField] private int height = 10;
     [SerializeField] private float cellSize = 2;
-    [SerializeField] private bool isToShowDebugObjects;
+    //[SerializeField] private bool isToShowDebugObjects;
 
-    private GridSystemHex<GridObject> gridSystem;
+    private GridSystem<GridObject> gridSystem;
+
+    [field: SerializeField]
+    public GridType GridType { get; private set; }
+
+    [SerializeField] private MeshRenderer floorMeshRenderer;
+    [SerializeField] private Material floorSquareGridMaterial;
+    [SerializeField] private Material floorHexaGridMaterial;
 
     private void Awake()
     {
@@ -29,19 +38,23 @@ public class LevelGrid : MonoBehaviour
 
         Instance = this;
 
-        gridSystem = new(width, height, cellSize,
-            (GridSystemHex<GridObject> g, GridPosition gridPosition)
+        //GridType = GridType.Hexagonal;
+        floorMeshRenderer.material = GridType == GridType.Square? floorSquareGridMaterial : floorHexaGridMaterial;
+
+        gridSystem = new(GridType, width, height, cellSize, 
+            (GridSystem<GridObject> g, GridPosition gridPosition) 
             => new GridObject(g, gridPosition));
 
-        if (isToShowDebugObjects)
+#if TESTING
         {
             gridSystem.CreateDebugObjects(gridDebugObjectPrefab, parent: transform);
         }
+#endif
     }
 
     private void Start()
     {
-        Pathfinding.Instance.Setup(width, height, cellSize);
+        Pathfinding.Instance.Setup(GridType, width, height, cellSize);
     }
 
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
@@ -70,14 +83,11 @@ public class LevelGrid : MonoBehaviour
         OnUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
-    public GridPosition GetGridPosition(Vector3 worldPosition)
-        => gridSystem.GetGridPosition(worldPosition);
+    public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
 
-    public Vector3 GetWorldPosition(GridPosition gridPosition)
-        => gridSystem.GetWorldPosition(gridPosition);
+    public Vector3 GetWorldPosition(GridPosition gridPosition) => gridSystem.GetWorldPosition(gridPosition);
 
-    public bool IsValidGridPosition(GridPosition gridPosition)
-        => gridSystem.IsValidGridPosition(gridPosition);
+    public bool IsValidGridPosition(GridPosition gridPosition) => gridSystem.IsValidGridPosition(gridPosition);
 
     public int GetWidth() => gridSystem.GetWidth();
 

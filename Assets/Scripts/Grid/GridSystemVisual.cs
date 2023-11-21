@@ -19,8 +19,8 @@ public class GridSystemVisual : MonoBehaviour
     public struct GridVisualTypeMaterial
     {
         public GridVisualType gridVisualType;
-        public Material material;
-        public Material hexMaterial;
+        public Material squareGridMaterial;
+        public Material hexaGridMaterial;
     }
 
     [SerializeField] private List<GridVisualTypeMaterial> gridVisualTypeMaterialList;
@@ -219,8 +219,13 @@ public class GridSystemVisual : MonoBehaviour
         {
             if (gridVisualTypeMaterial.gridVisualType == gridVisualType)
             {
-                //return gridVisualTypeMaterial.material;
-                return gridVisualTypeMaterial.hexMaterial;
+                switch (LevelGrid.Instance.GridType)
+                {
+                    case GridType.Square:
+                        return gridVisualTypeMaterial.squareGridMaterial;
+                    case GridType.Hexagonal:
+                        return gridVisualTypeMaterial.hexaGridMaterial;
+                }
             }
         }
         Debug.LogError($"Could not find GridVisualTypeMaterial for {gridVisualType}!");
