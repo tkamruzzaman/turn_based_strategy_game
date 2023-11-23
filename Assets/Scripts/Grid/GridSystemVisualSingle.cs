@@ -1,14 +1,19 @@
-//#define TESTING
 using UnityEngine;
 
 public class GridSystemVisualSingle : MonoBehaviour
 {
     [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private GameObject selectedGameObject;
+    [SerializeField] private MeshRenderer selectedMeshRenderer;
+    [Space]
+    [SerializeField] private Material squareMaterial;
+    [SerializeField] private Material hexagonalMaterial;
+
 
     private void Start()
     {
         Hide();
+        HideSelected();
+        selectedMeshRenderer.material = LevelGrid.Instance.GridType == GridType.Square ? squareMaterial : hexagonalMaterial;
     }
 
     public void Show(Material material)
@@ -22,10 +27,8 @@ public class GridSystemVisualSingle : MonoBehaviour
         meshRenderer.enabled = false;
     }
 
-#if TESTING
-    public void ShowSelected()=> selectedGameObject.SetActive(true);
+    public void ShowSelected() => selectedMeshRenderer.gameObject.SetActive(true);
 
-    public void HideSelected()=> selectedGameObject.SetActive(false);
-#endif
+    public void HideSelected() => selectedMeshRenderer.gameObject.SetActive(false);
 
 }

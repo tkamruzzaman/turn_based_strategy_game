@@ -1,3 +1,5 @@
+#define TESTING
+
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +10,9 @@ public class PathfindingGridDebugObject : GridDebugObject
     [SerializeField] private TMP_Text fCostText;
     [SerializeField] private SpriteRenderer isWalkableSpriteRenderer;
     [Space]
+    [SerializeField] private Sprite squareSprite;
+    [SerializeField] private Sprite hexagonSprite;
+
     [SerializeField] private bool isToShowWalkableArea;
 
     private PathNode pathNode;
@@ -16,6 +21,7 @@ public class PathfindingGridDebugObject : GridDebugObject
     {
         base.SetGridObject(gridObject);
         pathNode = gridObject as PathNode;
+        isWalkableSpriteRenderer.sprite = LevelGrid.Instance.GridType == GridType.Square ? squareSprite : hexagonSprite;
         isWalkableSpriteRenderer.gameObject.SetActive(isToShowWalkableArea);
     }
 

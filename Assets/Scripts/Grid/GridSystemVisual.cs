@@ -6,15 +6,6 @@ using UnityEngine;
 
 public class GridSystemVisual : MonoBehaviour
 {
-    public enum GridVisualType
-    {
-        White,
-        Blue,
-        Red,
-        RedSoft,
-        Yellow,
-    }
-
     [Serializable]
     public struct GridVisualTypeMaterial
     {
@@ -78,9 +69,7 @@ public class GridSystemVisual : MonoBehaviour
 
     private void CreateGridVisual()
     {
-        gridSystemVisualSingleArray = new GridSystemVisualSingle
-                                    [LevelGrid.Instance.GetWidth(),
-                                    LevelGrid.Instance.GetHeight()];
+        gridSystemVisualSingleArray = new GridSystemVisualSingle[LevelGrid.Instance.GetWidth(), LevelGrid.Instance.GetHeight()];
 
         for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
         {
@@ -96,15 +85,9 @@ public class GridSystemVisual : MonoBehaviour
         }
     }
 
-    private void UnitActionSystem_OnSelectedActionChanged(object sender, System.EventArgs e)
-    {
-        UpdateGridVisual();
-    }
+    private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e) => UpdateGridVisual();
 
-    private void LevelGrid_OnUnitMovedGridPosition(object sender, System.EventArgs e)
-    {
-        UpdateGridVisual();
-    }
+    private void LevelGrid_OnUnitMovedGridPosition(object sender, EventArgs e) => UpdateGridVisual();
 
     private void UpdateGridVisual()
     {

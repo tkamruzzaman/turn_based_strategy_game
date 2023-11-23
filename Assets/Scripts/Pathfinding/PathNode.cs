@@ -1,5 +1,3 @@
-using System;
-
 public class PathNode
 {
     private GridPosition gridPosition;
@@ -10,15 +8,9 @@ public class PathNode
     private PathNode cameFromPathNode;
     private bool isWalkable = true;
 
-    public PathNode(GridPosition gridPosition)
-    {
-        this.gridPosition = gridPosition;
-    }
+    public PathNode(GridPosition gridPosition) => this.gridPosition = gridPosition;
 
-    public override string ToString()
-    {
-        return gridPosition.ToString();
-    }
+    public override string ToString() => gridPosition.ToString();
 
     public int GetGCost() => gCost;
     public void SetGCost(int value) => gCost = value;

@@ -16,7 +16,6 @@ public class LevelGrid : MonoBehaviour
     [SerializeField] private int width = 10;
     [SerializeField] private int height = 10;
     [SerializeField] private float cellSize = 2;
-    //[SerializeField] private bool isToShowDebugObjects;
 
     private GridSystem<GridObject> gridSystem;
 
@@ -38,7 +37,6 @@ public class LevelGrid : MonoBehaviour
 
         Instance = this;
 
-        //GridType = GridType.Hexagonal;
         floorMeshRenderer.material = GridType == GridType.Square? floorSquareGridMaterial : floorHexaGridMaterial;
 
         gridSystem = new(GridType, width, height, cellSize, 
